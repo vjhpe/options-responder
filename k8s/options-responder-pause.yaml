@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: options-responder
+  labels:
+    app: options-uas
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: options-uas
+  template:
+    metadata:
+      labels:
+        app: options-uas
+        active: "yes"
+    spec:
+      initContainers:
+        - name: pause-service
+          image: busybox:stable
+          command: ['sh', '-c', 'echo Pausing start. && sleep 5']
+      containers:
+      - name: options-responder
+        image: vjhpe/options-responder:1.0.0
+        ports:
+        - containerPort: 5060
+        env:
+          - name: LISTENING_POINT_ADDRESS
+            value: "0.0.0.0"
+          - name: LISTENING_POINT_PORT
+            value: "5060"
+          - name: LISTENING_POINT_TRANSPORT
+            value: "UDP"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: options-responder
+spec:
+  type: ClusterIP
+  selector:
+    app: options-uas
+    active: "yes"
+  ports:
+    - protocol: UDP
+      port: 5060
+      targetPort: 5060
