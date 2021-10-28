@@ -1,5 +1,5 @@
 # options-responder
-A SIP server that just responds to incoming OPTIONS requests.
+A SIP server that responds to incoming OPTIONS requests.
 
 ## Building
 This is a maven project. The source requires Java 11.
@@ -22,7 +22,7 @@ To build the container image:
 ### Deployment into kubernetes
 - Make sure you have a working k8s cluster.
 - Make sure your k8s cluster has access to your docker repository.
-  - If not, ensure you push the image into the docker repository used by your k8s cluster. For e.g. on minikube, you can use `minikube image load options-reposonder:1.0.0`.
+  - If not, ensure you push the image into the docker repository used by your k8s cluster. For e.g. on minikube, you can use `minikube image load options-responder:1.0.0`.
 
 - Kubernetes deployment manifest files are available under the directory `k8s/`.
 - The application gets deployed as a Service with one pod behind it.
